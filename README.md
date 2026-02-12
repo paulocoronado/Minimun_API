@@ -17,3 +17,21 @@ pip install fastapi uvicorn
 python -m uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 
 # Usando ogr2ogr cargar el archivo geoJSON a una tabla
+ogr2ogr -f "PostgreSQL" \
+  PG:"host=localhost user=tu_usuario dbname=tu_base_datos password=tu_pass" \
+  "tu_archivo.geojson" \
+  -nln nombre_de_la_tabla \
+  -lco GEOMETRY_NAME=geom \
+  -nlt PROMOTE_TO_MULTI
+
+import geopandas as gpd
+from sqlalchemy import create_engine
+
+# 1. Leer el archivo
+gdf = gpd.read_file("datos.geojson")
+
+# 2. Conectar a la base de datos
+engine = create_engine('postgresql://usuario:password@localhost:5432/mi_base_datos')
+
+# 3. Subir los datos
+gdf.to_postgis("nombre_tabla", engine, if_exists='replace', index=False)

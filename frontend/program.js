@@ -1,29 +1,12 @@
-const API_URL = "http://127.0.0.1:8000/sum";
+async function sumar() {
+  let api_url = "http://127.0.0.1:8000/sum";
+  let number_1 = document.getElementById("number_1").value;
+  let number_2 = document.getElementById("number_2").value;
+  api_url = api_url + "?" + "number_1="+number_1+ "&"+"number_2="+number_2
 
-      function toNumber(value) {
-        // Convierte "3,5" a "3.5" por si el usuario usa coma
-        const n = Number(String(value).replace(",", "."));
-        return n;
-      }
+  const response = await fetch(api_url);
+  const data = await response.json();
+  document.getElementById("div_display").textContent = `Resultado: ${data.sum}`;
+}
 
-      async function sumar() {
-        const aRaw = document.getElementById("a").value;
-        const bRaw = document.getElementById("b").value;
-
-        const a = toNumber(aRaw);
-        const b = toNumber(bRaw);
-
-        if (Number.isNaN(a) || Number.isNaN(b)) {
-          document.getElementById("out").textContent = "Ingresa números válidos.";
-          return;
-        }
-
-        const url = `${API_URL}?a=${encodeURIComponent(a)}&b=${encodeURIComponent(b)}`;
-
-        const res = await fetch(url);
-        const data = await res.json();
-
-        document.getElementById("out").textContent = `Resultado: ${data.sum}`;
-      }
-
-      document.getElementById("btn").addEventListener("click", sumar);
+document.getElementById("btn_result").addEventListener("click", sumar);

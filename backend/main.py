@@ -13,5 +13,5 @@ app.add_middleware(
 )
 
 @app.get("/sum")
-def sum_numbers(a: float, b: float):
-    return {"a": a, "b": b, "sum": a + b}
+def sum_numbers(number_1: float, number_2: float):
+    return {"a": number_1, "b": number_2, "sum": number_1 + number_2}
